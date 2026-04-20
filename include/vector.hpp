@@ -65,6 +65,8 @@ VectorError VectorSet(Vector* vector, size_t i, const void* src);
 
 VectorError VectorVerefy(Vector* vector);
 
+size_t VectorGetSize(Vector* vector);
+
 void VectorDump(Vector* vector, const char* file, size_t line);
 
 #define VECTOR_CHECK(vector)                        \

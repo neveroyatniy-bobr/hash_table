@@ -124,6 +124,10 @@ VectorError VectorVerefy(Vector* vector) {
     return vector->last_error_code = VECTOR_OK;
 }
 
+size_t VectorGetSize(Vector* vector) {
+    return vector->size;
+}
+
 void VectorDump(Vector *vector, const char* file, size_t line) {
     fprintf(stderr, BRED "ERROR in %s:%lu: ", file, line);
     VectorPrintError(vector->last_error_code);
