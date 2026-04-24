@@ -4,7 +4,7 @@
 typedef int HashTableKey;
 typedef int HashTableValue;
 
-HashTableValue HASH_TABLE_INVALID_VALUE = 5735127;
+static const HashTableValue HASH_TABLE_INVALID_VALUE = 5735127;
 
 struct HashTableElem {
     HashTableKey key;

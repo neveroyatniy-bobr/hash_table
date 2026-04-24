@@ -1,47 +1,28 @@
-#include "list.hpp"
-
 #include <stdlib.h>
+#include <time.h>
+
+#include "hash_table.hpp"
+
+int HashFunc(HashTableKey key);
+
+int HashFunc(HashTableKey key) {
+    return key%(int)BUCKETS_COUNT;
+}
 
 int main() {
-    List list;
-    
-    if (ListInit(&list) != LIST_OK) {
-        LIST_PRINT_ERROR(&list);
-        return 1;
-    }
+    srand((unsigned int)time(NULL));
 
-    for (int i = 0; i < 11; i++) {
-        if (ListInsertAfter(&list, 0, i) != LIST_OK) {
-            LIST_PRINT_ERROR(&list);
-            return 1;
-        }
-    }
-    
-    size_t fective_next = 0;
-    VectorGet(&list.next, 5, &fective_next);
-    for (size_t i = 0; i < 3; i++) {
-       if (ListDeleteAt(&list, fective_next) != LIST_OK) {
-            LIST_PRINT_ERROR(&list);
-            return 1;
-        }
-        VectorGet(&list.next, 5, &fective_next);
-    }
+    HashTable hash_table = HashTableInit(HashFunc);
 
-    for (int i = 0; i < 5; i++) {
-        if (ListInsertAfter(&list, 0, i) != LIST_OK) {
-            LIST_PRINT_ERROR(&list);
-            return 1;
+    for (int i = 0; i < 1000; i++) {
+        if (HashTableSet(&hash_table, i, rand()) != 0) {
         }
     }
 
-    LIST_GRAPH_DUMP(&list);
+    HashTableDump(&hash_table);
 
-    system("explorer.exe dump_file.html");
-
-    if (ListDestroy(&list) != LIST_OK) {
-        LIST_PRINT_ERROR(&list);
-        return 1;
-    }
+    int err = HashTableDestroy(&hash_table);
+    printf("%d\n", err);
 
     return 0;
 }
