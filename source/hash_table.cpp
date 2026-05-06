@@ -1,5 +1,6 @@
 #include "hash_table.hpp"
 
+#include <string.h>
 #include <assert.h>
 
 HashTable HashTableInit(hash_func_t HashFunc) {
@@ -52,7 +53,7 @@ HashTableValue HashTableGet(HashTable* hash_table, HashTableKey key) {
             return HASH_TABLE_INVALID_VALUE;
         }
 
-        if (elem.key == key) {
+        if (strcmp(elem.key, key) == 0) {
             return elem.value;
         }
     }
@@ -69,6 +70,8 @@ int HashTableSet(HashTable* hash_table, HashTableKey key, HashTableValue value) 
     Vector* bucket = hash_table->buckets + bucket_i;
     size_t bucket_size = VectorGetSize(bucket);
 
+    HashTableElem new_elem = {key, value};
+
     for (size_t i = 0; i < bucket_size; i++) {
         HashTableElem elem = {};
         VectorError get_err = VectorGet(bucket, i, &elem);
@@ -76,18 +79,19 @@ int HashTableSet(HashTable* hash_table, HashTableKey key, HashTableValue value) 
             return -1;
         }
 
-        if (elem.key == key) {
-            VectorError set_err = VectorSet(bucket, bucket_i, &value);
+        if (strcmp(elem.key, key) == 0) {
+            VectorError set_err = VectorSet(bucket, i, &new_elem);
             return set_err == VECTOR_OK ? 0 : -1;
         }
     }
 
-    HashTableElem new_elem = {key, value};
     VectorError push_err = VectorPush(bucket, &new_elem);
     return push_err == VECTOR_OK ? 0 : -1;
 }
 
 int HashTableDump(HashTable* hash_table) {
+    assert(hash_table != NULL);
+
     fprintf(stderr, "--------HASH-TABLE-DUMP-------------\n");
     for (size_t bucket_i = 0; bucket_i < BUCKETS_COUNT; bucket_i++) {
         fprintf(stderr, "%lu\n", VectorGetSize(hash_table->buckets + bucket_i));

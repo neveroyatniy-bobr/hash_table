@@ -16,9 +16,13 @@ struct HashTable {
 };
 
 HashTable HashTableInit(hash_func_t HashFunc);
+
 int HashTableDestroy(HashTable* hash_table);
+
 HashTableValue HashTableGet(HashTable* hash_table, HashTableKey key);
+
 int HashTableSet(HashTable* hash_table, HashTableKey key, HashTableValue value);
+
 int HashTableDump(HashTable* hash_table);
 
 #endif // HASH_TABLE_HPP_
