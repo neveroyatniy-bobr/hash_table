@@ -84,6 +84,7 @@ static size_t VectorHash(Vector* /* vector */) {
 }
 #endif
 
+#ifndef NDEBUG
 VectorError VectorVerefy(Vector* vector) {
     if (vector == NULL) {
         return vector->last_error_code = VECTOR_NULL_PTR;
@@ -123,6 +124,11 @@ VectorError VectorVerefy(Vector* vector) {
 
     return vector->last_error_code = VECTOR_OK;
 }
+#else
+VectorError VectorVerefy(Vector* /*vector*/) {
+    return VECTOR_OK;
+}
+#endif
 
 size_t VectorGetSize(Vector* vector) {
     return vector->size;
