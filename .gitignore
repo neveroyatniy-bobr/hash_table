@@ -5,3 +5,5 @@ dump_file.html
 data/
 *.png
 *.txt
+*.data
+*.data.old
