@@ -6,7 +6,7 @@
 int HashFunc(HashTableKey key);
 
 int HashFunc(HashTableKey key) {
-    return key%(int)BUCKETS_COUNT;
+    return key;
 }
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
         if (HashTableSet(&hash_table, i, rand()) != 0) {
         }
     }
-
+    
     HashTableDump(&hash_table);
 
     int err = HashTableDestroy(&hash_table);

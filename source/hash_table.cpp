@@ -10,7 +10,7 @@ HashTable HashTableInit(hash_func_t HashFunc) {
                            };
     
     for (size_t bucket_i = 0; bucket_i < BUCKETS_COUNT; bucket_i++) {
-        if (VectorInit(hash_table.buckets + bucket_i, 0, 0) != VECTOR_OK) {
+        if (VectorInit(hash_table.buckets + bucket_i, 0, sizeof(HashTableElem)) != VECTOR_OK) {
             return {};
         }
     }
@@ -71,7 +71,7 @@ int HashTableSet(HashTable* hash_table, HashTableKey key, HashTableValue value) 
 
     for (size_t i = 0; i < bucket_size; i++) {
         HashTableElem elem = {};
-        VectorError get_err = VectorGet(bucket, bucket_i, &elem);
+        VectorError get_err = VectorGet(bucket, i, &elem);
         if (get_err != VECTOR_OK) {
             return -1;
         }
@@ -90,6 +90,8 @@ int HashTableSet(HashTable* hash_table, HashTableKey key, HashTableValue value) 
 int HashTableDump(HashTable* hash_table) {
     fprintf(stderr, "--------HASH-TABLE-DUMP-------------\n");
     for (size_t bucket_i = 0; bucket_i < BUCKETS_COUNT; bucket_i++) {
-        fprintf(stderr, "%llu\n", VectorGetSize(hash_table->buckets + bucket_i));
+        fprintf(stderr, "%lu\n", VectorGetSize(hash_table->buckets + bucket_i));
     }
+
+    return 0;
 }
