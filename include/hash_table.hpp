@@ -8,7 +8,7 @@
 
 typedef int (*hash_func_t)(HashTableKey);
 
-static const size_t BUCKETS_COUNT = 100;
+static const size_t BUCKETS_COUNT = 500;
 
 struct HashTable {
     Vector buckets[BUCKETS_COUNT];

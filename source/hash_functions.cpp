@@ -4,7 +4,7 @@
 
 #include "hash_table.hpp"
 
-int HashConstant(HashTableKey key) {
+int HashConstant(HashTableKey /*key*/) {
     return 0;
 }
 
@@ -25,7 +25,7 @@ int HashPolynomial(HashTableKey key) {
     int p = 31;
 
     while (*key != '\0') {
-        hash = hash * p + (int)(*key++);
+        hash = (hash * p + (int)(*key++)) % (__INT_MAX__ / 2);
     }
 
     return hash;
@@ -36,7 +36,7 @@ int HashDJB2(HashTableKey key) {
     int c = 0;
 
     while ((c = (unsigned char)*key++) != '\0') {
-        hash = hash * 33 + c;
+        hash = hash * 33 + (unsigned int)c;
     }
 
     return (int)hash;
@@ -55,14 +55,14 @@ int HashFNV1a(HashTableKey key) {
 
 int HashCRC32(HashTableKey key) {
     unsigned int crc = 0xFFFFFFFF;
-    int polynomial = 0xEDB88320;
+    unsigned int polynomial = 0xEDB88320;
 
     while (*key != '\0') {
         crc ^= (unsigned char)(*key++);
 
         for (int i = 0; i < 8; i++) {
             if (crc & 1) {
-                crc = (crc >> 1) ^ (unsigned int)polynomial;
+                crc = (crc >> 1) ^ polynomial;
             } else {
                 crc >>= 1;
             }
