@@ -1,6 +1,8 @@
 #include "hash_functions.hpp"
 
+#include <stdint.h>
 #include <string.h>
+#include <nmmintrin.h>
 
 #include "hash_table.hpp"
 
@@ -54,19 +56,10 @@ int HashFNV1a(HashTableKey key) {
 }
 
 int HashCRC32(HashTableKey key) {
-    unsigned int crc = 0xFFFFFFFF;
-    unsigned int polynomial = 0xEDB88320;
+    uint32_t crc = 0xFFFFFFFF;
 
     while (*key != '\0') {
-        crc ^= (unsigned char)(*key++);
-
-        for (int i = 0; i < 8; i++) {
-            if (crc & 1) {
-                crc = (crc >> 1) ^ polynomial;
-            } else {
-                crc >>= 1;
-            }
-        }
+        crc = _mm_crc32_u8(crc, (uint8_t)*key++);
     }
 
     return (int)(crc ^ 0xFFFFFFFF);
