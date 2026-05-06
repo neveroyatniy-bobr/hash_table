@@ -30,22 +30,10 @@ int main() {
         return 1;
     }
 
-    HashTest tests[] = {
-        { HashConstant,   "data/stats_constant.csv" },
-        { HashSum,        "data/stats_sum.csv"      },
-        { HashLength,     "data/stats_length.csv"   },
-        { HashPolynomial, "data/stats_poly.csv"     },
-        { HashDJB2,       "data/stats_djb2.csv"     },
-        { HashFNV1a,      "data/stats_fnv1a.csv"    },
-        { HashCRC32,      "data/stats_crc32.csv"    }
-    };
+    HashTest test = { HashCRC32, "data/stats_crc32.csv" };
 
-    size_t tests_count = sizeof(tests) / sizeof(tests[0]);
-
-    for (size_t i = 0; i < tests_count; i++) {
-        printf("Выполняется %s\n.", tests[i].csv_file_name);
-        RunTest(tests[i]);
-    }
+    printf("Выполняется %s\n.", test.csv_file_name);
+    RunTest(test);
 
     printf("Готово.\n");
 
